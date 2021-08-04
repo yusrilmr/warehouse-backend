@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
-public class Product_Article {
+public class ProductArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
@@ -32,8 +32,8 @@ public class Product_Article {
     @UpdateTimestamp
     private Timestamp lastUpdate;
 
-    public Product_Article(){}
-    public Product_Article(long productId, long articleId, long amount) {
+    public ProductArticle(){}
+    public ProductArticle(long productId, long articleId, long amount) {
         super();
         this.productId = productId;
         this.articleId = articleId;
