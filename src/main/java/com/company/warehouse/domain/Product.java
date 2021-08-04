@@ -1,14 +1,14 @@
 package com.company.warehouse.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+@Entity
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,18 +19,16 @@ public class Product {
     private String name;
 
     @Column(name="created_date")
-    @CreatedDate
-    private Timestamp createdDate;
+    @CreationTimestamp
+    private LocalDateTime createdDate;
 
     @Column(name="last_update")
     @UpdateTimestamp
-    private Timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
 
     public Product(){}
-    public Product(String name, Timestamp createdDate, Timestamp lastUpdate) {
+    public Product(String name) {
         this.name = name;
-        this.createdDate = createdDate;
-        this.lastUpdate = lastUpdate;
     }
 
     public long getId() {
@@ -45,19 +43,11 @@ public class Product {
         this.name = name;
     }
 
-    public Timestamp getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Timestamp getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 }

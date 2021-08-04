@@ -2,6 +2,7 @@ package com.company.warehouse.domain;
 
 import javax.persistence.*;
 
+@Entity
 @Table(name = "user_entity")
 public class User {
     @Id
@@ -9,13 +10,13 @@ public class User {
     @Column(name="id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="username", nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name="password", nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name="role", nullable = false)
     private String role;
 
     public User(){}

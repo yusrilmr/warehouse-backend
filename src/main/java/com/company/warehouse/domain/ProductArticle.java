@@ -1,70 +1,84 @@
 package com.company.warehouse.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+@Entity
 public class ProductArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private long id;
 
-    @Column(name="product_id")
-    private long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    @Column(name="article_id")
-    private long articleId;
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
 
-    @Column(name="amount")
-    private long amount;
+    @Column(name="total_article")
+    private long total_article;
 
     @Column(name="created_date")
-    @CreatedDate
-    private Timestamp createdDate;
+    @CreationTimestamp
+    private LocalDateTime createdDate;
 
     @Column(name="last_update")
     @UpdateTimestamp
-    private Timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
 
     public ProductArticle(){}
-    public ProductArticle(long productId, long articleId, long amount) {
+    public ProductArticle(Product product, Article article, long total_article) {
         super();
-        this.productId = productId;
-        this.articleId = articleId;
-        this.amount = amount;
+        this.product = product;
+        this.article = article;
+        this.total_article = total_article;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getProductId() {
-        return productId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public long getArticleId() {
-        return articleId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public void setArticleId(long articleId) {
-        this.articleId = articleId;
+    public Article getArticle() {
+        return article;
     }
 
-    public long getAmount() {
-        return amount;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public long getTotalArticle() {
+        return total_article;
+    }
+
+    public void setTotalArticle(long total_article) {
+        this.total_article = total_article;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
     }
 }
