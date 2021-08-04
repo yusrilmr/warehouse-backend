@@ -2,11 +2,10 @@ package com.company.warehouse.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Article {
@@ -31,6 +30,9 @@ public class Article {
     @Column(name="last_update")
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
+    private Set<ProductArticle> productArticles;
 
     // TODO: implement deletion date
 //    @Column(name="deletion_date")
@@ -78,5 +80,13 @@ public class Article {
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
+    }
+
+    public Set<ProductArticle> getProductArticles() {
+        return productArticles;
+    }
+
+    public void setProductArticles(Set<ProductArticle> productArticles) {
+        this.productArticles = productArticles;
     }
 }

@@ -16,7 +16,9 @@ public class AuthenticationService {
     static final String SIGNING_KEY = "SecretKey";
     static final String PREFIX = "Bearer";
 
-    // Add token to Authorization header
+    /**
+     * Add token to Authorization header
+     */
     static public void addToken(HttpServletResponse res, String username) {
         String JwtToken = Jwts.builder().setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -25,7 +27,11 @@ public class AuthenticationService {
         res.addHeader("Authorization", PREFIX + " " + JwtToken);
         res.addHeader("Access-Control-Expose-Headers", "Authorization");
     }
-    // Get token from Authorization header
+
+    /**
+     * Get token from Authorization header
+     * @return
+     */
     static public Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null) {

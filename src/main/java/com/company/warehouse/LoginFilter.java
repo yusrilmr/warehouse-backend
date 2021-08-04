@@ -22,6 +22,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         setAuthenticationManager(authManager);
     }
 
+    /**
+     * Authenticate the request
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
     throws AuthenticationException, IOException {
@@ -31,6 +34,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         );
     }
 
+    /**
+     * Further execution when authentication is successful
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
                                             FilterChain chain, Authentication auth) {

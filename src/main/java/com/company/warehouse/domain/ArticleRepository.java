@@ -14,7 +14,7 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
      * @param id
      * @return
      */
-    List<Article> findByExternalId(long id);
+    Article findByExternalId(long id);
 
     /**
      * Find articles by name

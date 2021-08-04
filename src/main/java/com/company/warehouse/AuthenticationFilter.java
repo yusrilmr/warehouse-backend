@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class AuthenticationFilter extends GenericFilterBean {
+    /**
+     * Handle authentication in all endpoints except /login
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
     throws IOException, ServletException {
