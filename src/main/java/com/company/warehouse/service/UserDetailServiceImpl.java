@@ -1,7 +1,7 @@
 package com.company.warehouse.service;
 
 import com.company.warehouse.domain.User;
-import com.company.warehouse.domain.UserRepository;
+import com.company.warehouse.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

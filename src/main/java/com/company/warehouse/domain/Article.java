@@ -5,6 +5,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,8 +15,8 @@ public class Article {
     @Column(name="id")
     private long id;
 
-    @Column(name="external_id", unique = true)
-    private String externalId;
+    @Column(name="identification", unique = true)
+    private String identification;
 
     @Column(name="name")
     private String name;
@@ -39,23 +40,27 @@ public class Article {
 //    private Timestamp deletionDate;
 
     public Article(){}
-    public Article(String externalId, String name, long stock) {
+    public Article(String identification, String name, long stock) {
         super();
-        this.externalId = externalId;
+        this.identification = identification;
         this.name = name;
         this.stock = stock;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getExternalId() {
-        return externalId;
+    public String getIdentification() {
+        return identification;
     }
 
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 
     public String getName() {

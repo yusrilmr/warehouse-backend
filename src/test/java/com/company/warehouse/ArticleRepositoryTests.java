@@ -2,7 +2,7 @@ package com.company.warehouse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.company.warehouse.domain.Article;
-import com.company.warehouse.domain.ArticleRepository;
+import com.company.warehouse.repository.ArticleRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ArticleRepositoryTests {
     }
 
     @Test
-    public void findByExternalId_IdIsNegative_ReturnNull() {
+    public void findByIdentification_IdentificationIsNegative_ReturnNull() {
 
     }
 

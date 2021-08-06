@@ -1,6 +1,10 @@
 package com.company.warehouse;
 
 import com.company.warehouse.domain.*;
+import com.company.warehouse.repository.ArticleRepository;
+import com.company.warehouse.repository.ProductArticleRepository;
+import com.company.warehouse.repository.ProductRepository;
+import com.company.warehouse.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -30,11 +30,16 @@ public class Product {
 
     public Product(){}
     public Product(String name) {
+        super();
         this.name = name;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

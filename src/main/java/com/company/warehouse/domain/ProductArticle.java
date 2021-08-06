@@ -1,11 +1,10 @@
 package com.company.warehouse.domain;
 
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -50,6 +49,9 @@ public class ProductArticle {
         this.id = id;
     }
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("productId")
     public Product getProduct() {
         return product;
     }
@@ -58,6 +60,9 @@ public class ProductArticle {
         this.product = product;
     }
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("articleId")
     public Article getArticle() {
         return article;
     }
