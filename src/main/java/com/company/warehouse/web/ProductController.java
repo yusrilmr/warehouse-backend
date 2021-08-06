@@ -2,15 +2,21 @@ package com.company.warehouse.web;
 
 import com.company.warehouse.domain.Article;
 import com.company.warehouse.domain.Product;
+import com.company.warehouse.domain.ProductArticle;
 import com.company.warehouse.domain.ProductDetail;
 import com.company.warehouse.repository.ProductRepository;
 import com.company.warehouse.validation.ProductNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
+@Transactional
 class ProductController {
     private final ProductRepository productRepository;
 
@@ -35,8 +41,8 @@ class ProductController {
         product.getProductArticles().forEach(productArticle -> {
             Article article = productArticle.getArticle();
             if (article != null)
-                results.add(new ProductDetail(article.getIdentification(),
-                        article.getName(), productArticle.getTotalArticle()));
+                results.add(new ProductDetail(article.getIdentification(), article.getName(),
+                        productArticle.getTotalArticle(), article.getStock()));
         });
         return results;
     }
@@ -62,5 +68,26 @@ class ProductController {
     @DeleteMapping("/products/{id}")
     void deleteProduct(@PathVariable Long id) {
         productRepository.deleteById(id);
+    }
+
+//    @Transactional(value = "chainedTransactionManager")
+    @DeleteMapping("/products/sell/{id}")
+    void sellProduct(@PathVariable Long id) {
+        // TODO: implement chain transaction
+        Product product = productRepository.getById(id);
+        Set<ProductArticle> productArticles = product.getProductArticles();
+        if (!CollectionUtils.isEmpty(productArticles)) {
+            productArticles.forEach(productArticle -> {
+                long currentStock = productArticle.getArticle().getStock();
+                long newStock = currentStock - productArticle.getTotalArticle();
+                if (newStock > 0)
+                    productArticle.getArticle().setStock(newStock);
+//                else
+
+            });
+            productRepository.save(product);
+        }
+        productRepository.deleteById(id);
+//        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 }

@@ -4,11 +4,13 @@ public class ProductDetail {
     private String identification;
     private String name;
     private Long totalArticle;
+    private Long stock;
 
-    public ProductDetail(String identification, String name, Long totalArticle) {
+    public ProductDetail(String identification, String name, Long totalArticle, Long stock) {
         this.identification = identification;
         this.name = name;
         this.totalArticle = totalArticle;
+        this.stock = stock;
     }
 
     public String getIdentification() {
@@ -33,5 +35,13 @@ public class ProductDetail {
 
     public void setTotalArticle(Long totalArticle) {
         this.totalArticle = totalArticle;
+    }
+
+    public Long getStock() {
+        return stock;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
     }
 }
