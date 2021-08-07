@@ -2,7 +2,7 @@ package com.company.warehouse.domain.file;
 
 import java.util.List;
 
-class ProductFileProduct {
+public class ProductFileProduct {
     private String name;
     private List<ProductFileProductDetail> contain_articles;
 

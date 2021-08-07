@@ -1,6 +1,6 @@
 package com.company.warehouse.domain.file;
 
-class ProductFileProductDetail {
+public class ProductFileProductDetail {
     private String art_id;
     private String amount_of;
 

@@ -1,14 +1,16 @@
 package com.company.warehouse.web;
 
 import com.company.warehouse.domain.*;
+import com.company.warehouse.domain.file.ProductFile;
+import com.company.warehouse.repository.ArticleRepository;
 import com.company.warehouse.repository.ProductRepository;
 import com.company.warehouse.validation.ProductNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,9 +18,11 @@ import java.util.Set;
 @Transactional
 class ProductController {
     private final ProductRepository productRepository;
+    private final ArticleRepository articleRepository;
 
-    ProductController(ProductRepository productRepository) {
+    ProductController(ProductRepository productRepository, ArticleRepository articleRepository) {
         this.productRepository = productRepository;
+        this.articleRepository = articleRepository;
     }
 
     @GetMapping("/products")
@@ -34,6 +38,26 @@ class ProductController {
     @PostMapping("/products")
     Product insertProduct(@RequestBody Product newProduct) {
         return productRepository.save(newProduct);
+    }
+
+    @PostMapping("/products/upload")
+    void uploadArticleFile(@RequestBody ProductFile productFile) {
+        List<Product> products = new ArrayList<>();
+        productFile.getProducts().forEach(prodElement -> {
+            Product product = new Product(prodElement.getName());
+            List<ProductArticle> productArticles = new ArrayList<>();
+            prodElement.getContain_articles().forEach(artElement -> {
+                Article article = articleRepository.findByIdentification(artElement.getArt_id());
+                if (article != null) {
+                    productArticles.add(new ProductArticle(product, article,
+                            Long.parseLong(artElement.getAmount_of())));
+
+                }
+            });
+            product.setProductArticles(new HashSet<ProductArticle>(productArticles));
+            products.add(product);
+        });
+        productRepository.saveAll(products);
     }
 
     @PutMapping("/products/{id}")
