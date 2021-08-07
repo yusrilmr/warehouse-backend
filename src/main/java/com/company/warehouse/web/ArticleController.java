@@ -1,10 +1,14 @@
 package com.company.warehouse.web;
 
 import com.company.warehouse.domain.Article;
+import com.company.warehouse.domain.file.ArticleFile;
+import com.company.warehouse.domain.file.ArticleFileDetail;
 import com.company.warehouse.repository.ArticleRepository;
+import com.company.warehouse.validation.ArticleFileContentException;
 import com.company.warehouse.validation.ArticleNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,6 +37,26 @@ class ArticleController {
     @PostMapping("/articles")
     Article insertArticle(@RequestBody Article newArticle) {
         return articleRepository.save(newArticle);
+    }
+
+    @PostMapping("/articles/upload")
+    void uploadArticleFile(@RequestBody ArticleFile articleFile) {
+        List<Article> articles = new ArrayList<>();
+        try {
+            articleFile.getInventory().forEach(article ->
+                    articles.add(new Article(
+                            article.getArt_id(),
+                            article.getName(),
+                            Long.parseLong(article.getStock())
+                    ))
+            );
+        } catch (NumberFormatException e) {
+            throw new ArticleFileContentException();
+        }
+        if (articles.size() > 0)
+            articleRepository.saveAll(articles);
+        else
+            throw new ArticleFileContentException();
     }
 
     @PutMapping("/articles/{id}")

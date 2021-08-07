@@ -12,7 +12,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private long id;
+    private Long id;
 
     @Column(name="name")
     private String name;
@@ -34,7 +34,7 @@ public class Product {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

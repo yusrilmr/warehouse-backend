@@ -21,7 +21,7 @@ public class ArticleRepositoryTests {
     @Test
     public void insertArticle_ArticleDataIsComplete_ArticleIsSaved()
     {
-        Article article = new Article("TB22222", "table leg", 5);
+        Article article = new Article("TB22222", "table leg", 5L);
         testEntityManager.persistAndFlush(article);
         assertThat(article.getId()).isNotZero();
     }
@@ -33,8 +33,8 @@ public class ArticleRepositoryTests {
 
     @Test
     public void deleteCars() {
-        testEntityManager.persistAndFlush(new Article("TB22222", "table leg", 5));
-        testEntityManager.persistAndFlush(new Article("TB22223", "table top", 5));
+        testEntityManager.persistAndFlush(new Article("TB22222", "table leg", 5L));
+        testEntityManager.persistAndFlush(new Article("TB22223", "table top", 5L));
         articleRepository.deleteAll();
         assertThat(articleRepository.findAll()).isEmpty();
     }

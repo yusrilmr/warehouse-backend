@@ -40,9 +40,9 @@ public class WarehouseApplication {
     CommandLineRunner runner(){
         return args -> {
             // Add article objects and save these to db
-            Article article1 = new Article("TB28179", "table leg", 5);
-            Article article2 = new Article("TB28329", "table top", 7);
-            Article article3 = new Article("SC28329", "screw", 20);
+            Article article1 = new Article("TB28179", "table leg", 5L);
+            Article article2 = new Article("TB28329", "table top", 7L);
+            Article article3 = new Article("SC28329", "screw", 20L);
             articleRepository.saveAll(Arrays.asList(article1, article2, article3));
 
             // Add product object and save these to db.
@@ -52,9 +52,9 @@ public class WarehouseApplication {
             productRepository.saveAll(Arrays.asList(product1, product2, product3));
 
             // Link product and article
-            ProductArticle productArticle1 = new ProductArticle(product1, article1, 4);
-            ProductArticle productArticle2 = new ProductArticle(product1, article2, 1);
-            ProductArticle productArticle3 = new ProductArticle(product1, article3, 4);
+            ProductArticle productArticle1 = new ProductArticle(product1, article1, 4L);
+            ProductArticle productArticle2 = new ProductArticle(product1, article2, 1L);
+            ProductArticle productArticle3 = new ProductArticle(product1, article3, 4L);
             productArticleRepository.saveAll(Arrays.asList(productArticle1, productArticle2, productArticle3));
 
             // Add user (username: user password: user role: user)

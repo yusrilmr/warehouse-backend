@@ -1,9 +1,6 @@
 package com.company.warehouse.web;
 
-import com.company.warehouse.domain.Article;
-import com.company.warehouse.domain.Product;
-import com.company.warehouse.domain.ProductArticle;
-import com.company.warehouse.domain.ProductDetail;
+import com.company.warehouse.domain.*;
 import com.company.warehouse.repository.ProductRepository;
 import com.company.warehouse.validation.ProductNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,19 +29,6 @@ class ProductController {
     @GetMapping("/products/{id}")
     Product getProduct(@PathVariable Long id) {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
-    }
-
-    @GetMapping("/products/{id}/detail")
-    List<ProductDetail> getProductDetail(@PathVariable Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
-        List<ProductDetail> results = new ArrayList<>();
-        product.getProductArticles().forEach(productArticle -> {
-            Article article = productArticle.getArticle();
-            if (article != null)
-                results.add(new ProductDetail(article.getIdentification(), article.getName(),
-                        productArticle.getTotalArticle(), article.getStock()));
-        });
-        return results;
     }
 
     @PostMapping("/products")
@@ -82,12 +66,51 @@ class ProductController {
                 long newStock = currentStock - productArticle.getTotalArticle();
                 if (newStock > 0)
                     productArticle.getArticle().setStock(newStock);
-//                else
-
             });
             productRepository.save(product);
         }
         productRepository.deleteById(id);
 //        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
+
+    // tag-start::Custom product objects
+    @GetMapping("/product-quantities/")
+    List<ProductQuantity> getAllProductsAndQuantity() {
+        List<ProductQuantity> results = new ArrayList<>();
+        productRepository.findAll().forEach(product -> {
+            Long quantity = Long.MAX_VALUE;
+            if (!CollectionUtils.isEmpty(product.getProductArticles())) {
+                for (ProductArticle productArticle : product.getProductArticles()) {
+                    Long amount = productArticle.getTotalArticle();
+                    Long stock = productArticle.getArticle().getStock();
+                    if (amount > stock) {
+                        quantity = 0L;
+                        break;
+                    }
+                    else {
+                        quantity = (stock / amount) < quantity ? (stock / amount) : quantity;
+                    }
+                }
+            }
+            else {
+                quantity = 0L;
+            }
+            results.add(new ProductQuantity(product.getId(), product.getName(), quantity));
+        });
+        return results;
+    }
+
+    @GetMapping("/product-details/{id}")
+    List<ProductDetail> getProductDetail(@PathVariable Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        List<ProductDetail> results = new ArrayList<>();
+        product.getProductArticles().forEach(productArticle -> {
+            Article article = productArticle.getArticle();
+            if (article != null)
+                results.add(new ProductDetail(article.getIdentification(), article.getName(),
+                        productArticle.getTotalArticle(), article.getStock()));
+        });
+        return results;
+    }
+    // tag-end::get-aggregate-root[]
 }

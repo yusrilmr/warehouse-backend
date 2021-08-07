@@ -5,7 +5,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,7 +12,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private long id;
+    private Long id;
 
     @Column(name="identification", unique = true)
     private String identification;
@@ -22,7 +21,7 @@ public class Article {
     private String name;
 
     @Column(name="stock")
-    private long stock;
+    private Long stock;
 
     @Column(name="created_date")
     @CreationTimestamp
@@ -40,7 +39,7 @@ public class Article {
 //    private Timestamp deletionDate;
 
     public Article(){}
-    public Article(String identification, String name, long stock) {
+    public Article(String identification, String name, Long stock) {
         super();
         this.identification = identification;
         this.name = name;
@@ -51,7 +50,7 @@ public class Article {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -71,11 +70,11 @@ public class Article {
         this.name = name;
     }
 
-    public long getStock() {
+    public Long getStock() {
         return stock;
     }
 
-    public void setStock(long stock) {
+    public void setStock(Long stock) {
         this.stock = stock;
     }
 

@@ -12,7 +12,7 @@ public class ProductArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -23,7 +23,7 @@ public class ProductArticle {
     private Article article;
 
     @Column(name="total_article")
-    private long total_article;
+    private Long total_article;
 
     @Column(name="created_date")
     @CreationTimestamp
@@ -34,18 +34,18 @@ public class ProductArticle {
     private LocalDateTime lastUpdate;
 
     public ProductArticle(){}
-    public ProductArticle(Product product, Article article, long total_article) {
+    public ProductArticle(Product product, Article article, Long total_article) {
         super();
         this.product = product;
         this.article = article;
         this.total_article = total_article;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,11 +71,11 @@ public class ProductArticle {
         this.article = article;
     }
 
-    public long getTotalArticle() {
+    public Long getTotalArticle() {
         return total_article;
     }
 
-    public void setTotalArticle(long total_article) {
+    public void setTotalArticle(Long total_article) {
         this.total_article = total_article;
     }
 

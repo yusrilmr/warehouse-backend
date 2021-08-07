@@ -6,7 +6,7 @@ public class ProductDetail {
     private Long totalArticle;
     private Long stock;
 
-    public ProductDetail(String identification, String name, Long totalArticle, Long stock) {
+    public ProductDetail(String identification, String name, Long totalArticle, long stock) {
         this.identification = identification;
         this.name = name;
         this.totalArticle = totalArticle;
