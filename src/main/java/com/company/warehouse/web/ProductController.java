@@ -76,14 +76,14 @@ class ProductController {
         productRepository.deleteById(id);
     }
 
-    @DeleteMapping("/products/sell/{id}")
-    void sellProduct(@PathVariable Long id) {
+    @DeleteMapping("/products/sell/{id}/{total}")
+    void sellProduct(@PathVariable Long id, @PathVariable Long total) {
         Product product = productRepository.getById(id);
         Set<ProductArticle> productArticles = product.getProductArticles();
         if (!CollectionUtils.isEmpty(productArticles)) {
             productArticles.forEach(productArticle -> {
                 long currentStock = productArticle.getArticle().getStock();
-                long newStock = currentStock - productArticle.getTotalArticle();
+                long newStock = currentStock - (productArticle.getTotalArticle() * total);
                 if (newStock > 0)
                     productArticle.getArticle().setStock(newStock);
             });
