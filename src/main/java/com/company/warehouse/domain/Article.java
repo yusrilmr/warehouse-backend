@@ -35,10 +35,6 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     private Set<ProductArticle> productArticles;
 
-    // TODO: implement deletion date
-//    @Column(name="deletion_date")
-//    private Timestamp deletionDate;
-
     public Article(){}
     public Article(Long id){
         this.id = id;

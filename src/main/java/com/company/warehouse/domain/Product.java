@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -17,6 +18,9 @@ public class Product {
 
     @Column(name="name")
     private String name;
+
+    @Column(name="price")
+    private BigDecimal price;
 
     @Column(name="created_date")
     @CreationTimestamp
@@ -31,9 +35,10 @@ public class Product {
     private Set<ProductArticle> productArticles;
 
     public Product(){}
-    public Product(String name) {
+    public Product(String name, BigDecimal price) {
         super();
         this.name = name;
+        this.price = price;
     }
 
     public Long getId() {
@@ -50,6 +55,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public LocalDateTime getCreatedDate() {

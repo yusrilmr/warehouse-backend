@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -46,9 +47,9 @@ public class WarehouseApplication {
             articleRepository.saveAll(Arrays.asList(article1, article2, article3));
 
             // Add product object and save these to db.
-            Product product1 = new Product("Picnic Table");
-            Product product2 = new Product("Picnic Chair");
-            Product product3 = new Product("Picnic Tent");
+            Product product1 = new Product("Picnic Table", BigDecimal.valueOf(199.99));
+            Product product2 = new Product("Picnic Chair", BigDecimal.valueOf(99.99));
+            Product product3 = new Product("Picnic Tent", BigDecimal.valueOf(499.99));
             productRepository.saveAll(Arrays.asList(product1, product2, product3));
 
             // Link product and article

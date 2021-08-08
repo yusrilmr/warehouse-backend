@@ -24,8 +24,7 @@ public class ProductArticle {
     private Article article;
 
     @Column(name="total_article")
-    @JsonProperty("totalArticle")
-    private Long total_article;
+    private Long totalArticle;
 
     @Column(name="created_date")
     @CreationTimestamp
@@ -36,11 +35,11 @@ public class ProductArticle {
     private LocalDateTime lastUpdate;
 
     public ProductArticle(){}
-    public ProductArticle(Product product, Article article, Long total_article) {
+    public ProductArticle(Product product, Article article, Long totalArticle) {
         super();
         this.product = product;
         this.article = article;
-        this.total_article = total_article;
+        this.totalArticle = totalArticle;
     }
 
     public Long getId() {
@@ -79,11 +78,11 @@ public class ProductArticle {
     }
 
     public Long getTotalArticle() {
-        return total_article;
+        return totalArticle;
     }
 
-    public void setTotalArticle(Long total_article) {
-        this.total_article = total_article;
+    public void setTotalArticle(Long totalArticle) {
+        this.totalArticle = totalArticle;
     }
 
     public LocalDateTime getCreatedDate() {
