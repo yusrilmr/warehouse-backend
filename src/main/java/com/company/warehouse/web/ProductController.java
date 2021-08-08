@@ -5,6 +5,7 @@ import com.company.warehouse.domain.file.ProductFile;
 import com.company.warehouse.repository.ArticleRepository;
 import com.company.warehouse.repository.ProductRepository;
 import com.company.warehouse.validation.ProductNotFoundException;
+import com.company.warehouse.validation.StockNegativeException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,7 +77,7 @@ class ProductController {
         productRepository.deleteById(id);
     }
 
-    @DeleteMapping("/products/sell/{id}/{total}")
+    @PutMapping("/products/sell/{id}/{total}")
     void sellProduct(@PathVariable Long id, @PathVariable Long total) {
         Product product = productRepository.getById(id);
         Set<ProductArticle> productArticles = product.getProductArticles();
@@ -84,12 +85,13 @@ class ProductController {
             productArticles.forEach(productArticle -> {
                 long currentStock = productArticle.getArticle().getStock();
                 long newStock = currentStock - (productArticle.getTotalArticle() * total);
-                if (newStock > 0)
+                if (newStock >= 0)
                     productArticle.getArticle().setStock(newStock);
+                else
+                    throw new StockNegativeException();
             });
             productRepository.save(product);
         }
-        productRepository.deleteById(id);
     }
 
     @GetMapping("/product-quantities/")
