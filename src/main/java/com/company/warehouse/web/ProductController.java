@@ -9,10 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Transactional
@@ -36,8 +33,8 @@ class ProductController {
     }
 
     @PostMapping("/products")
-    Product insertProduct(@RequestBody Product newProduct) {
-        return productRepository.save(newProduct);
+    void insertProduct(@RequestBody Product newProduct) {
+        productRepository.save(newProduct);
     }
 
     @PostMapping("/products/upload")
@@ -54,7 +51,7 @@ class ProductController {
 
                 }
             });
-            product.setProductArticles(new HashSet<ProductArticle>(productArticles));
+            product.setProductArticles(new HashSet<>(productArticles));
             products.add(product);
         });
         productRepository.saveAll(products);
@@ -78,7 +75,6 @@ class ProductController {
         productRepository.deleteById(id);
     }
 
-//    @Transactional(value = "chainedTransactionManager")
     @DeleteMapping("/products/sell/{id}")
     void sellProduct(@PathVariable Long id) {
         // TODO: implement chain transaction
@@ -94,7 +90,6 @@ class ProductController {
             productRepository.save(product);
         }
         productRepository.deleteById(id);
-//        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
     }
 
     // tag-start::Custom product objects

@@ -12,6 +12,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
+
     private Long id;
 
     @Column(name="identification", unique = true)
@@ -39,6 +40,9 @@ public class Article {
 //    private Timestamp deletionDate;
 
     public Article(){}
+    public Article(Long id){
+        this.id = id;
+    }
     public Article(String identification, String name, Long stock) {
         super();
         this.identification = identification;

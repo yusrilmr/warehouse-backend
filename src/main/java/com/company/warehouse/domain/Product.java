@@ -1,5 +1,6 @@
 package com.company.warehouse.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,6 +27,7 @@ public class Product {
     private LocalDateTime lastUpdate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @JsonManagedReference
     private Set<ProductArticle> productArticles;
 
     public Product(){}

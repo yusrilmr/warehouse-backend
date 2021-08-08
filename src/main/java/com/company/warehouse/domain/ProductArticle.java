@@ -16,6 +16,7 @@ public class ProductArticle {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @ManyToOne
@@ -23,6 +24,7 @@ public class ProductArticle {
     private Article article;
 
     @Column(name="total_article")
+    @JsonProperty("totalArticle")
     private Long total_article;
 
     @Column(name="created_date")
@@ -69,6 +71,11 @@ public class ProductArticle {
 
     public void setArticle(Article article) {
         this.article = article;
+    }
+
+    @JsonProperty("articleId")
+    public void setArticle(Long id) {
+        this.article = new Article(id);
     }
 
     public Long getTotalArticle() {
