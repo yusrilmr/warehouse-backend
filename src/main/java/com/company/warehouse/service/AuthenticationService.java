@@ -20,12 +20,21 @@ public class AuthenticationService {
      * Add token to Authorization header
      */
     static public void addToken(HttpServletResponse res, String username) {
-        String JwtToken = Jwts.builder().setSubject(username)
+        String jwtToken = createToken(username);
+        res.addHeader("Authorization", PREFIX + " " + jwtToken);
+        res.addHeader("Access-Control-Expose-Headers", "Authorization");
+    }
+
+    /**
+     * Create jwt token with username
+     * @param username
+     * @return
+     */
+    static public String createToken(String username) {
+        return Jwts.builder().setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SIGNING_KEY)
                 .compact();
-        res.addHeader("Authorization", PREFIX + " " + JwtToken);
-        res.addHeader("Access-Control-Expose-Headers", "Authorization");
     }
 
     /**

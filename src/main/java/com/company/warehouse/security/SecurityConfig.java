@@ -1,4 +1,4 @@
-package com.company.warehouse;
+package com.company.warehouse.security;
 
 import com.company.warehouse.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

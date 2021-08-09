@@ -2,7 +2,6 @@ package com.company.warehouse.controller;
 
 import com.company.warehouse.domain.Article;
 import com.company.warehouse.domain.file.ArticleFile;
-import com.company.warehouse.repository.ArticleRepository;
 import com.company.warehouse.service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.company.warehouse;
+package com.company.warehouse.security;
 
 import com.company.warehouse.service.AuthenticationService;
 import org.springframework.security.core.Authentication;

@@ -1,8 +1,10 @@
 package com.company.warehouse.controller;
 
 import com.company.warehouse.domain.Article;
-import com.company.warehouse.domain.file.ArticleFile;
-import com.company.warehouse.domain.file.ArticleFileDetail;
+import com.company.warehouse.domain.Product;
+import com.company.warehouse.domain.file.ProductFile;
+import com.company.warehouse.domain.file.ProductFileProduct;
+import com.company.warehouse.domain.file.ProductFileProductDetail;
 import com.company.warehouse.service.AuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -16,7 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,51 +29,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ArticleControllerTests {
+public class ProductControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void getAllArticles_IsValid_Return200Ok() throws Exception {
+    public void getAllProducts_IsValid_Return200Ok() throws Exception {
         String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(get("/articles")
+        this.mockMvc.perform(get("/products")
                         .header("Authorization", token)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
     }
 
     @Test
-    public void getArticlesByIds_IdsIsListOfNumber_Return200Ok() throws Exception {
+    public void getProduct_IsValid_Return200Ok() throws Exception {
         String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(get("/articles-by-ids?ids=1,2,3")
+        this.mockMvc.perform(get("/products/{id}",4)
                         .header("Authorization", token)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
     }
 
     @Test
-    public void getArticleById_IdIsANumber_Return200Ok() throws Exception {
-        String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(get("/articles/1")
-                        .header("Authorization", token)
-                        .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
-    }
-
-    @Test
-    public void insertArticle_ContentIsValid_Return200Ok() throws Exception {
-        Article article = new Article();
-        article.setIdentification("TBL222022");
-        article.setName("Table");
-        article.setStock(20L);
-
+    public void insertProduct_IsValid_Return200Ok() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(article);
+        String requestJson = ow.writeValueAsString(new Product("Diner Table", BigDecimal.valueOf(199.99)));
 
         String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(post("/articles")
+        this.mockMvc.perform(post("/products")
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -76,22 +67,35 @@ public class ArticleControllerTests {
     }
 
     @Test
-    public void uploadArticleFile_ContentIsValid_Return200Ok() throws Exception {
-        ArticleFileDetail articleFileDetail = new ArticleFileDetail();
-        articleFileDetail.setArt_id("1");
-        articleFileDetail.setName("Article 1");
-        articleFileDetail.setStock("22");
-
-        ArticleFile articleFile = new ArticleFile();
-        articleFile.setInventory(Arrays.asList(articleFileDetail));
+    public void uploadArticleFile_IsValid_Return200Ok() throws Exception {
+        List<ProductFileProductDetail> productFileProductDetails = new ArrayList<>();
+        productFileProductDetails.add(new ProductFileProductDetail("TB28179", "2"));
+        List<ProductFileProduct> productFileProducts = new ArrayList<>();
+        productFileProducts.add(new ProductFileProduct("Diner Table", productFileProductDetails));
+        ProductFile productFile = new ProductFile(productFileProducts);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(articleFile);
+        String requestJson = ow.writeValueAsString(productFile);
 
         String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(post("/articles/upload")
+        this.mockMvc.perform(post("/products")
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateProduct_IsValid_Return200Ok() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(new Product("Diner Table", BigDecimal.valueOf(199.99)));
+
+        String token = AuthenticationService.createToken("admin");
+        this.mockMvc.perform(put("/products/1")
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -99,28 +103,38 @@ public class ArticleControllerTests {
     }
 
     @Test
-    public void updateArticle_ContentIsValid_Return200Ok() throws Exception {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(new Article("TBL22212", "Table", 20L));
-
+    public void deleteProduct_IsValid_Return200Ok() throws Exception {
         String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(put("/articles/1")
-                        .header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
-                        .andExpect(status().isOk());
-
-    }
-
-    @Test
-    public void deleteArticle_ContentIsValid_Return200Ok() throws Exception {
-        String token = AuthenticationService.createToken("admin");
-        this.mockMvc.perform(delete("/articles/1")
+        this.mockMvc.perform(delete("/products/{id}",4)
                         .header("Authorization", token)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
+    }
+
+    @Test
+    public void sellProduct_IsValid_Return200Ok() throws Exception {
+        String token = AuthenticationService.createToken("admin");
+        this.mockMvc.perform(put("/products/sell/1/1")
+                        .header("Authorization", token)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllProductsAndQuantity_IsValid_Return200Ok() throws Exception {
+        String token = AuthenticationService.createToken("admin");
+        this.mockMvc.perform(get("/product-quantities/")
+                        .header("Authorization", token)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getProductDetail_IsValid_Return200Ok() throws Exception {
+        String token = AuthenticationService.createToken("admin");
+        this.mockMvc.perform(get("/product-details/{id}", 1)
+                        .header("Authorization", token)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
