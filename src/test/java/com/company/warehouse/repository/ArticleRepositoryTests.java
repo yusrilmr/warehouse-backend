@@ -1,4 +1,4 @@
-package com.company.warehouse;
+package com.company.warehouse.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.company.warehouse.domain.Article;
@@ -19,11 +19,10 @@ public class ArticleRepositoryTests {
     private ArticleRepository articleRepository;
 
     @Test
-    public void insertArticle_ArticleDataIsComplete_ArticleIsSaved()
-    {
+    public void insertArticle_ArticleDataIsComplete_ArticleIsSaved() {
         Article article = new Article("TB22222", "table leg", 5L);
         testEntityManager.persistAndFlush(article);
-        assertThat(article.getId()).isNotZero();
+        assertThat(article.getId()).isNotNull();
     }
 
     @Test
@@ -32,7 +31,7 @@ public class ArticleRepositoryTests {
     }
 
     @Test
-    public void deleteCars() {
+    public void deleteCars_ArticleDataIsComplete_AllArticlesDeleted() {
         testEntityManager.persistAndFlush(new Article("TB22222", "table leg", 5L));
         testEntityManager.persistAndFlush(new Article("TB22223", "table top", 5L));
         articleRepository.deleteAll();

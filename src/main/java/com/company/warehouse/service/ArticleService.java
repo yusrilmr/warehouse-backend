@@ -1,4 +1,4 @@
-package com.company.warehouse.web;
+package com.company.warehouse.service;
 
 import com.company.warehouse.domain.Article;
 import com.company.warehouse.domain.file.ArticleFile;
@@ -7,49 +7,67 @@ import com.company.warehouse.validation.ArticleFileContentException;
 import com.company.warehouse.validation.ArticleFileDuplicateException;
 import com.company.warehouse.validation.ArticleNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-class ArticleController {
+@Service
+public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    ArticleController(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    @GetMapping("/articles")
-    List<Article> getAllArticles() {
+    /**
+     * Get all articles
+     * @return list of articles
+     */
+    public List<Article> getAllArticles() {
         return articleRepository.findAll();
     }
 
-    @GetMapping("/articles-by-ids")
-    List<Article> getArticlesByIds(@RequestParam List<Long> ids){
+    /**
+     * Get articles by ids
+     * @param ids list of ids
+     * @return list of articles
+     */
+    public List<Article> getArticlesByIds(List<Long> ids) {
         return articleRepository.findByIdIn(ids);
     }
 
-    @GetMapping("/articles/{id}")
-    Article getArticleById(@PathVariable Long id) {
+    /**
+     * Get article by id
+     * @param id article id
+     * @return an article
+     */
+    public Article getArticleById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
-    @PostMapping("/articles")
-    Article insertArticle(@RequestBody Article newArticle) {
+    /**
+     * Insert an article
+     * @param newArticle the new article
+     * @return newly inserted article
+     */
+    public Article insertArticle(Article newArticle) {
         return articleRepository.save(newArticle);
     }
 
-    @PostMapping("/articles/upload")
-    void uploadArticleFile(@RequestBody ArticleFile articleFile) {
+    /**
+     * Import the content of the json inventory json file into article
+     * @param articleFile the json format content of the inventory file
+     */
+    public void uploadArticleFile(ArticleFile articleFile) {
         List<Article> articles = new ArrayList<>();
         try {
             articleFile.getInventory().forEach(article ->
-                articles.add(new Article(
-                        article.getArt_id(),
-                        article.getName(),
-                        Long.parseLong(article.getStock())
-                ))
+                    articles.add(new Article(
+                            article.getArt_id(),
+                            article.getName(),
+                            Long.parseLong(article.getStock())
+                    ))
             );
         } catch (NumberFormatException e) {
             throw new ArticleFileContentException();
@@ -64,8 +82,13 @@ class ArticleController {
             throw new ArticleFileContentException();
     }
 
-    @PutMapping("/articles/{id}")
-    Article updateArticle(@RequestBody Article newArticle, @PathVariable Long id) {
+    /**
+     * Upsert an article.
+     * @param newArticle the updated article
+     * @param id article id
+     * @return the newly updated/inserted article
+     */
+    public Article updateArticle(Article newArticle, Long id) {
         return articleRepository.findById(id)
                 .map(article -> {
                     article.setIdentification(newArticle.getIdentification());
@@ -79,8 +102,11 @@ class ArticleController {
                 });
     }
 
-    @DeleteMapping("/articles/{id}")
-    void deleteArticle(@PathVariable Long id) {
+    /**
+     * Delete an article
+     * @param id article id
+     */
+    public void deleteArticle(Long id) {
         articleRepository.deleteById(id);
     }
 }

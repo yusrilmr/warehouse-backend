@@ -12,7 +12,6 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-
     private Long id;
 
     @Column(name="identification", unique = true)

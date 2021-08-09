@@ -16,5 +16,10 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
      */
     List<Article> findByIdIn(List<Long> ids);
 
+    /**
+     * Find article based on id
+     * @param id article id
+     * @return an article
+     */
     Article findByIdentification(String id);
 }
