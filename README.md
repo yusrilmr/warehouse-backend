@@ -1,12 +1,11 @@
 # Warehouse-Backend
 
 ## Design Decisions for Backend
-- Why Java Spring? This technology is preferred technology in Ingka for the backend (source: https://techradar.ingka.com/). Therefore, it will be good from the maintainability point of view.
 - This table below shows the comparison between some technologies that can be used for the backend:
   |  | .NET Core MVC | Spring MVC | Spring Webflux |
   | ------ | ------ | ------ | ------ |
   | Release Date (Maturity) | 2009 [[4][4]] | 2005 [[5][5]] | 2017 [[6][6]] |
-  | Complexity | Normal | Normal [[7][7]] | High. Different debugging experience [[7][7]] |
+  | Complexity | Normal | Normal | High. Different debugging experience [[7][7]] |
   | Performance | Good (extensive use of asynchronous) [[1][1]] | Normal (Servlet / Blocking) [[1][1]][[2][2]] | Good (Reactive / Non-blocking) [[2][2]] |
 - The product quantity is calculated in the backend because if we fetch the data to the frontend and calculate it, then it can slow the browser performance when the product or article data is big.
 
